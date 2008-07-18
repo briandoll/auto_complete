@@ -8,6 +8,10 @@ Example:
   # View
   <%= text_field_with_auto_complete :post, title %>
 
+  # View, indexed text fields
+  <%= text_field_with_auto_complete :post, title, {:index => 0} %>
+  <%= text_field_with_auto_complete :post, title, {:index => 1} %>
+
 By default, auto_complete_for limits the results to 10 entries,
 and sorts by the given field.
 

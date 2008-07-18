@@ -32,13 +32,17 @@ module AutoComplete
   module ClassMethods
     def auto_complete_for(object, method, options = {})
       define_method("auto_complete_for_#{object}_#{method}") do
+        search_criterion = params[object][method]
+        if (search_criterion.nil?)
+          search_criterion = params[object][params[object].keys.first][method]
+        end
+        
         find_options = { 
-          :conditions => [ "LOWER(#{method}) LIKE ?", '%' + params[object][method].downcase + '%' ], 
+          :conditions => [ "LOWER(#{method}) LIKE ?", '%' + search_criterion.downcase + '%' ], 
           :order => "#{method} ASC",
           :limit => 10 }.merge!(options)
         
         @items = object.to_s.camelize.constantize.find(:all, find_options)
-
         render :inline => "<%= auto_complete_result @items, '#{method}' %>"
       end
     end
