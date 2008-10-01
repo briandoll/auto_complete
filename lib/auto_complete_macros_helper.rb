@@ -45,6 +45,14 @@ module AutoCompleteMacrosHelper
   #                                  innerHTML is replaced.
   # <tt>:on_show</tt>::              Like on_hide, only now the expression is called
   #                                  then the div is shown.
+  # <tt>:update_element</tt>::       Hook for a custom function to replace the 
+  #                                  built-in function that adds the list item 
+  #                                  text to the input field. The custom 
+  #                                  function is called after the element has 
+  #                                  been updated (i.e. when the user has 
+  #                                  selected an entry). The function receives 
+  #                                  one parameter only: the selected item (the 
+  #                                  li item selected)
   # <tt>:after_update_element</tt>:: A Javascript expression that is called when the
   #                                  user has selected one of the proposed values. 
   #                                  The expression should take two variables: element and value.
@@ -71,7 +79,8 @@ module AutoCompleteMacrosHelper
     js_options[:method]     = "'#{options[:method].to_s}'" if options[:method]
 
     { :after_update_element => :afterUpdateElement, 
-      :on_show => :onShow, :on_hide => :onHide, :min_chars => :minChars }.each do |k,v|
+      :update_element => :updateElement, :on_show => :onShow, 
+      :on_hide => :onHide, :min_chars => :minChars }.each do |k,v|
       js_options[v] = options[k] if options[k]
     end
 
