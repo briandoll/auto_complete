@@ -22,9 +22,17 @@ module AutoCompleteMacrosHelper
   #                                  innerHTML should be updated with the autocomplete
   #                                  entries returned by the AJAX request. 
   #                                  Defaults to <tt>field_id</tt> + '_auto_complete'
+  # <tt>:callback</tt>::             This function is called just before the 
+  #                                  Request is actually made, allowing you to 
+  #                                  modify the querystring that is sent to the 
+  #                                  server. The function receives the 
+  #                                  completer’s input field and the default 
+  #                                  querystring (‘value=XXX’) as parameters. 
+  #                                  You should return the querystring you want 
+  #                                  used, including the default part.  #                               
   # <tt>:with</tt>::                 A JavaScript expression specifying the
   #                                  parameters for the XMLHttpRequest. This defaults
-  #                                  to 'fieldname=value'.
+  #                                  to 'fieldname=value'. Overrides :callback.
   # <tt>:frequency</tt>::            Determines the time to wait after the last keystroke
   #                                  for the AJAX request to be initiated.
   # <tt>:indicator</tt>::            Specifies the DOM ID of an element which will be
@@ -71,7 +79,11 @@ module AutoCompleteMacrosHelper
     
     js_options = {}
     js_options[:tokens] = array_or_string_for_javascript(options[:tokens]) if options[:tokens]
-    js_options[:callback]   = "function(element, value) { return #{options[:with]} }" if options[:with]
+    if options[:with]
+      js_options[:callback]   = "function(element, value) { return #{options[:with]} }"
+    elsif options[:callback]
+      js_options[:callback] = options[:callback]
+    end
     js_options[:indicator]  = "'#{options[:indicator]}'" if options[:indicator]
     js_options[:select]     = "'#{options[:select]}'" if options[:select]
     js_options[:paramName]  = "'#{options[:param_name]}'" if options[:param_name]
