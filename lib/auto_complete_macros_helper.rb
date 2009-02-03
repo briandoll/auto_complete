@@ -145,6 +145,7 @@ module AutoCompleteMacrosHelper
         div.auto_complete ul li {
           margin:0;
           padding:3px;
+          font-size:11px;
         }
         div.auto_complete ul li.selected {
           background-color: #ffb;
